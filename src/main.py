@@ -1,4 +1,13 @@
-from dm.core.game.game  import DMGame
+import os
+
+from Core  import DMGame
+################################################################################
+
+src_path = "./src"
+current_pypath = os.environ.get("PYTHONPATH", "")
+updated_pypath = f"{src_path}:{current_pypath}"
+os.environ["PYTHONPATH"] = updated_pypath
+
 ################################################################################
 def main() -> None:
 
