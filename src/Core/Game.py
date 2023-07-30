@@ -12,6 +12,8 @@ from Core.ObjPool import DMObjectPool
 from Core.Random import DMGenerator
 from Core.StateMachine import DMStateMachine
 
+from utils import *
+
 if TYPE_CHECKING:
     from Core import DMObject
 ################################################################################
@@ -57,9 +59,58 @@ class DMGame:
         self._events: DMEventManager = DMEventManager(self)
 
 ################################################################################
+###### GAME LOOP ###############################################################
+################################################################################
     def run(self) -> None:
 
-        pass
+        # We have to call this down here so it doesn't run into conflicts with
+        # the object pool up above.
+        # self._dungeon._map._init_map()
+
+        # Start the game in the main menu state.
+        self._state.push("main_menu")
+
+        # Main game loop.
+        while self._running:
+            # Check for events in the event queue.
+            self.handle_events()
+
+            # Update the current state.
+            dt = self._clock.tick(FPS) / 1000
+            self.update(dt)
+
+            # Draw the current state.
+            self.draw()
+
+        # If we've exited the game loop, quit the game.
+        self.quit()
+
+################################################################################
+    def handle_events(self) -> None:
+
+        for event in pygame.event.get():
+            # Handle quit events.
+            if event.type == pygame.QUIT:
+                self.quit()
+            # And we'll make ESC quit the game as well.
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.quit()
+            else:
+                self._state.handle_event(event)
+
+################################################################################
+    def draw(self) -> None:
+
+        self._state.draw(self._game_surf)
+        self._logger.draw(self._log_surf)
+
+        # Flip the display.
+        pygame.display.flip()
+
+################################################################################
+    def update(self, dt: float) -> None:
+
+        self._state.update(dt)
 
 ################################################################################
     def quit(self) -> None:
@@ -68,17 +119,7 @@ class DMGame:
         pygame.quit()
 
 ################################################################################
-    @property
-    def game_surface(self) -> Surface:
-
-        return self._game_surf
-
-################################################################################
-    @property
-    def log_surface(self) -> Surface:
-
-        return self._log_surf
-
+##### PROPERTIES ###############################################################
 ################################################################################
     @property
     def rng(self) -> DMGenerator:
@@ -111,18 +152,15 @@ class DMGame:
 
 ################################################################################
     @property
-    def log(self) -> DMLogManager:
+    def logs(self) -> DMLogManager:
 
         return self._logger
 
 ################################################################################
-    def log_game(self, _obj: DMObject, msg: str) -> None:
-
-        self._logger.log_game(_obj, msg)
-
+##### LOGGING ##################################################################
 ################################################################################
-    def log_engine(self, msg: str) -> None:
+    def log(self, _obj: DMObject, msg: str) -> None:
 
-        self._logger.log_engine(msg)
+        self._logger.game(_obj, msg)
 
 ################################################################################

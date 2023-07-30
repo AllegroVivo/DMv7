@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from src.Core import DMGame
+    from Core.Game import DMGame
 ################################################################################
 
 __all__ = ("DMObject", )

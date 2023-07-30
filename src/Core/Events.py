@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List
 from src.Events import _EVENT_REFERENCE
 
 if TYPE_CHECKING:
-    from Core import DMGame
+    from Core.Game import DMGame
 ################################################################################
 
 __all__ = ("DMEventManager", )

@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING, Deque, List, Optional, Tuple
 from utils import *
 
 if TYPE_CHECKING:
-    from Core import DMGame, DMObject
+    from Core.Game import DMGame
+    from Core.Object import DMObject
 ################################################################################
 
 __all__ = ("DMLogManager",)
@@ -20,6 +21,7 @@ class DMLogManager(Handler):
 
     __slots__ = (
         "_state",
+        "_surface",
         "_engine_log",
         "_game_log",
         "_log_lines",
@@ -35,6 +37,7 @@ class DMLogManager(Handler):
         super().__init__()
 
         self._state: DMGame = state
+        self._surface: Surface = Surface(state._log_surf.get_size())
 
         self._engine_log: Logger = logging.getLogger("game.engine")
         self._game_log: Logger = logging.getLogger("game.game")
@@ -82,7 +85,7 @@ class DMLogManager(Handler):
     @property
     def surface(self) -> Surface:
 
-        return self._state.log_surface
+        return self._surface
 
 ################################################################################
     @property
@@ -107,20 +110,20 @@ class DMLogManager(Handler):
 
         self._log_lines.append(self.format(record))
 
-        self._state.log_surface.fill(LOGGER_BG)
+        self.surface.fill(LOGGER_BG)
 
         for i, line in enumerate(self._log_lines):
             text_surf = self.font.render(line, True, WHITE)
             text_rect = text_surf.get_rect(topleft=(0, i * 24))
-            self._state.log_surface.blit(text_surf, text_rect)
+            self.surface.blit(text_surf, text_rect)
 
 ################################################################################
-    def draw(self) -> None:
+    def draw(self, surface: Surface) -> None:
 
-        self.surface.blit(self.surface, self.rect)
+        surface.blit(self.surface, self.rect)
 
 ################################################################################
-    def message_color(self, record: LogRecord) -> Tuple[int, int, int, int]:
+    def message_color(self) -> Tuple[int, int, int, int]:
 
         if self._obj_handle is None:
             return WHITE
@@ -136,8 +139,38 @@ class DMLogManager(Handler):
             )
 
 ################################################################################
-    def debug(self, msg: str, obj: DMObject, **kwargs) -> None:
+    def debug(self, msg: str) -> None:
 
-        pass
+        self._engine_log.debug(msg)
+
+################################################################################
+    def info(self, msg: str) -> None:
+
+        self._engine_log.info(msg)
+
+################################################################################
+    def warning(self, msg: str) -> None:
+
+        self._engine_log.warning(msg)
+
+################################################################################
+    def error(self, msg: str) -> None:
+
+        self._engine_log.error(msg)
+
+################################################################################
+    def critical(self, msg: str) -> None:
+
+        self._engine_log.critical(msg)
+
+################################################################################
+    def game(self, _obj: DMObject, msg: str) -> None:
+
+        self._obj_handle = _obj
+        self._format_game_object()
+
+        self._game_log.info(msg)
+
+        self._obj_handle = None
 
 ################################################################################

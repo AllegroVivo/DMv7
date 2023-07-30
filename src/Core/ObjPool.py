@@ -17,7 +17,8 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Type, Union
 from utils import *
 
 if TYPE_CHECKING:
-    from Core import DMGame, DMObject
+    from Core.Game import DMGame
+    from Core.Object import DMObject
 ################################################################################
 
 __all__ = ("DMObjectPool",)

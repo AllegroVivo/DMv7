@@ -4,7 +4,7 @@ import pygame
 
 from typing import TYPE_CHECKING, List, Optional, Union
 
-from Core import DMState
+from Core.State import DMState
 from States import _STATE_MAPPINGS
 
 if TYPE_CHECKING:

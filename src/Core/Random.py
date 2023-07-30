@@ -4,7 +4,7 @@ from time import time
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
-    from Core import DMGame
+    from Core.Game import DMGame
 ################################################################################
 
 __all__ = ("DMGenerator", )
