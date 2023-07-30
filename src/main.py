@@ -1,6 +1,6 @@
 import os
 
-from Core  import DMGame
+from Core.Game import DMGame
 ################################################################################
 
 src_path = "./src"

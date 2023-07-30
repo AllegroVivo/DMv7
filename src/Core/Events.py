@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable, Dict, List
 
-from Events import _EVENT_REFERENCE
+from src.Events import _EVENT_REFERENCE
 
 if TYPE_CHECKING:
     from Core import DMGame
