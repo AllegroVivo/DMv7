@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List
 from src.Events import _EVENT_REFERENCE
 
 if TYPE_CHECKING:
-    from Core.Game import DMGame
+    from Core import DMGame
 ################################################################################
 
 __all__ = ("DMEventManager", )
@@ -19,11 +19,13 @@ class DMEventManager:
     )
 
 ################################################################################
+##### INITIALIZATION ###########################################################
+################################################################################
     def __init__(self, state: DMGame):
 
         self._state: DMGame = state
 
-        self._events: Dict[str, List[Callable[Context, None]]] = {}
+        self._events: Dict[str, List[Callable]] = {}
         self._init_event_dict()
 
 ################################################################################
@@ -33,7 +35,9 @@ class DMEventManager:
             self._events[event] = []
 
 ################################################################################
-    def subscribe(self, e: str, callback: Callable[Context, None]) -> None:
+##### GENERAL METHODS ##########################################################
+################################################################################
+    def subscribe(self, e: str, callback: Callable) -> None:
 
         if not callable(callback):
             raise TypeError("Invalid observer callback passed to EventManager.subscribe().")
@@ -47,7 +51,7 @@ class DMEventManager:
             self._events[e] = [callback]
 
 ################################################################################
-    def unsubscribe(self, e: str, callback: Callable[Context, None]) -> None:
+    def unsubscribe(self, e: str, callback: Callable) -> None:
 
         if callback not in self._events[e]:
             return

@@ -17,8 +17,7 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Type, Union
 from utils import *
 
 if TYPE_CHECKING:
-    from Core.Game import DMGame
-    from Core.Object import DMObject
+    from Core import DMGame, DMObject
 ################################################################################
 
 __all__ = ("DMObjectPool",)
@@ -45,6 +44,8 @@ class DMObjectPool:
         # "__fates",
     )
 
+################################################################################
+##### INITIALIZATION ###########################################################
 ################################################################################
     def __init__(self, state: DMGame):
 
@@ -80,6 +81,8 @@ class DMObjectPool:
         #     [f(self._state, 0, 0) for f in ALL_FATES].copy()  # type: ignore
         # )
 
+################################################################################
+##### INTERNAL METHODS #########################################################
 ################################################################################
     def _spawn(
         self,

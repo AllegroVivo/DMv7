@@ -1,20 +1,26 @@
-from typing import TYPE_CHECKING, Dict, Type
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
-    from Core.State import DMState
+    from Core import DMGame
 ################################################################################
 
-__all__ = [
-    "_STATE_MAPPINGS",
-]
+__all__ = ("DMContext", )
 
 ################################################################################
-# Modules
-from .Debug import DebugState
+class DMContext:
+
+    __slots__ = (
+        "_state",
+        "_id",
+    )
 
 ################################################################################
-_STATE_MAPPINGS: Dict[str, Type["DMState"]] = {
-    "debug" : DebugState,
-    "main_menu" : DebugState,
-}
+    def __init__(self, state: DMGame):
+
+        self._state: DMGame = state
+        self._id: UUID = uuid4()
+
 ################################################################################

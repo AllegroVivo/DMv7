@@ -1,68 +1,63 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from pygame import Surface
-from pygame.event import Event
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
-    from Core import DMGame
+    from Core import DMGame, DMRoom
 ################################################################################
 
-__all__ = ("DMState", )
+__all__ = ("DMMapRow",)
 
 ################################################################################
-class DMState(ABC):
+class DMMapRow:
 
     __slots__ = (
-        "_game",
-        "quit",
-        "next_state",
+        "_state",
+        "_row_idx",
+        "_rooms",
     )
 
 ################################################################################
 ##### INITIALIZATION ###########################################################
 ################################################################################
-    def __init__(self, game: DMGame):
+    def __init__(self, game: DMGame, index: int):
 
-        self._game: DMGame = game
+        self._state: DMGame = game
 
-        self.quit: bool = False
-        self.next_state: Optional[str] = None
+        self._row_idx: int = index
+        self._rooms: List[DMRoom] = []
 
 ################################################################################
 ##### INTERNAL METHODS #########################################################
 ################################################################################
-    def __repr__(self) -> str:
+    def __getitem__(self, item: int) -> Optional[DMRoom]:
 
-        return f"<DMState: {self.__class__.__name__}>"
+        try:
+            return self._rooms[item]
+        except IndexError:
+            return
 
 ################################################################################
-##### PROPERTIES ###############################################################
+    def __len__(self) -> int:
+
+        return len(self._rooms)
+
+################################################################################
+##### PROPERTIES ################################################################
 ################################################################################
     @property
     def game(self) -> DMGame:
 
-        return self._game
+        return self._state
 
 ################################################################################
-##### ABSTRACT METHODS #########################################################
+##### GAME LOOP METHODS ########################################################
 ################################################################################
-    @abstractmethod
-    def handle_event(self, event: Event) -> None:
+    def draw(self, surface: Surface) -> None:
 
-        pass
-
-################################################################################
-    @abstractmethod
-    def update(self, dt: float) -> None:
-
-        pass
-
-################################################################################
-    @abstractmethod
-    def draw(self, screen: Surface) -> None:
-
-        pass
+        for room in self._rooms:
+            if room is not None:
+                room.draw(surface)
 
 ################################################################################

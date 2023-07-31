@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
-    from Core.Game import DMGame
+    from Core import DMGame
 ################################################################################
 
 __all__ = ("DMObject", )
@@ -21,6 +21,8 @@ class DMObject:
     )
 
 ################################################################################
+##### INITIALIZATION ###########################################################
+################################################################################
     def __init__(self, state: DMGame, name: str, description: Optional[str] = None, rank: int = 0):
 
         self._uuid: UUID = uuid4()
@@ -30,6 +32,8 @@ class DMObject:
         self._description: Optional[str] = description
         self._rank: int = rank
 
+################################################################################
+##### INTERNAL METHODS #########################################################
 ################################################################################
     def __eq__(self, other: DMObject) -> bool:
 
@@ -80,6 +84,8 @@ class DMObject:
 
         return False
 
+################################################################################
+##### PUBLIC METHODS ###########################################################
 ################################################################################
     def copy(self, **kwargs) -> DMObject:
 

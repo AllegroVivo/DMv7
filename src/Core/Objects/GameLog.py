@@ -8,7 +8,6 @@ from pygame     import Rect, Surface
 from pygame.font import Font
 from typing import TYPE_CHECKING, Deque, List, Optional, Tuple
 
-from .Loggers import EngineLogHandler, GameLogHandler
 from utils import *
 
 if TYPE_CHECKING:
@@ -18,7 +17,7 @@ if TYPE_CHECKING:
 __all__ = ("DMLogManager",)
 
 ################################################################################
-class DMLogManager:
+class DMLogManager(Handler):
 
     __slots__ = (
         "_state",
@@ -26,6 +25,8 @@ class DMLogManager:
         "_engine_log",
         "_game_log",
         "_log_lines",
+        "_max_lines",
+        "_obj_handle",
     )
 
     MAX_LINES = 150
@@ -40,10 +41,11 @@ class DMLogManager:
         self._state: DMGame = state
         self._surface: Surface = Surface(state._log_surf.get_size())
 
-        self._engine_log: EngineLogHandler = EngineLogHandler(self._state)
-        self._game_log: GameLogHandler = GameLogHandler(self._state)
+        self._engine_log: Logger = logging.getLogger("game.engine")
+        self._game_log: Logger = logging.getLogger("game.game")
 
         self._log_lines: Deque = deque(maxlen=self.MAX_LINES)
+        self._obj_handle: Optional[DMObject] = None
 
         self._init_loggers()
 

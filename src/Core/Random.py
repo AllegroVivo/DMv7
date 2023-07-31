@@ -4,7 +4,7 @@ from time import time
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
-    from Core.Game import DMGame
+    from Core import DMGame
 ################################################################################
 
 __all__ = ("DMGenerator", )
@@ -19,6 +19,8 @@ class DMGenerator:
         "_seed",
     )
 
+################################################################################
+##### INITIALIZATION ###########################################################
 ################################################################################
     def __init__(self, state: DMGame, seed: Optional[int] = None) -> None:
 
@@ -41,6 +43,8 @@ class DMGenerator:
             )
 
 ################################################################################
+##### INTERNAL METHODS #########################################################
+################################################################################
     def _regenerate(self) -> None:
 
         for i in range(624):
@@ -53,7 +57,7 @@ class DMGenerator:
         self._index = 0
 
 ################################################################################
-    def next(self) -> float:
+    def _next(self) -> float:
 
         if self._index >= 624:
             self._regenerate()
@@ -69,13 +73,15 @@ class DMGenerator:
         return y / 0xffffffff
 
 ################################################################################
+##### PUBLIC METHODS ###########################################################
+################################################################################
     def choice(self, seq: List[Any], *, exclude: Optional[Any] = None) -> Any:
 
         if exclude is not None:
             seq = [item for item in seq if item != exclude]
 
         try:
-            return seq[int(self.next() * len(seq))]
+            return seq[int(self._next() * len(seq))]
         except IndexError:
             return None
 
@@ -88,7 +94,7 @@ class DMGenerator:
         if n > len(seq):
             return []
 
-        return [seq.pop(int(self.next() * len(seq))) for _ in range(n)]
+        return [seq.pop(int(self._next() * len(seq))) for _ in range(n)]
 
 ################################################################################
     def weighted_choice(
@@ -111,7 +117,7 @@ class DMGenerator:
 
         choices = []
         for _ in range(n):
-            r = self.next()
+            r = self._next()
             for i, weight in enumerate(scaled_weights):
                 if r < weight:
                     choices.append(seq[i])
@@ -142,6 +148,6 @@ class DMGenerator:
         elif chance < 0:
             chance = 0
 
-        return self.next() <= chance
+        return self._next() <= chance
 
 ################################################################################
