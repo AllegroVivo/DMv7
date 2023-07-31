@@ -2,22 +2,21 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List, Optional, Type, TypeVar
 
-from Components import DMTransform, DMUnitStats
-from Core.Object import DMObject
+from .Unit import DMUnit
 
 if TYPE_CHECKING:
     from Core import DMGame
 ################################################################################
 
-__all__ = ("DMUnit",)
+__all__ = ("DMHero",)
 
-M = TypeVar("M", bound="DMMonster")
+H = TypeVar("H", bound="DMHero")
 
 ################################################################################
-class DMUnit(DMObject):
+class DMHero(DMUnit):
 
     __slots__ = (
-        "_stats",
+
     )
 
 ################################################################################
@@ -29,15 +28,8 @@ class DMUnit(DMObject):
         name: str,
         description: Optional[str],
         rank: int,
-        life: int,
-        atk: int,
-        defense: float,
     ):
 
-        super().__init__(state, name, description, rank)
+        super().__init__(state, name, description, rank, 1, 1, 1.0)
 
-        self._stats: DMUnitStats = DMUnitStats(life, atk, defense)
-
-################################################################################
-##### INTERNAL METHODS #########################################################
 ################################################################################

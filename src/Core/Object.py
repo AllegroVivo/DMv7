@@ -7,7 +7,7 @@ from Components import DMTransform
 from utils import *
 
 if TYPE_CHECKING:
-    from Core import DMGame
+    from Core import DMGame, DMGraphical
 ################################################################################
 
 __all__ = ("DMObject", )
@@ -24,6 +24,7 @@ class DMObject:
         "_description",
         "_rank",
         "_transform",
+        "_graphical",
     )
 
 ################################################################################
@@ -35,6 +36,7 @@ class DMObject:
         self._state: DMGame = state
 
         self._transform: DMTransform = DMTransform()
+        self._graphical: Optional[DMGraphical] = None
 
         self._name: str = name
         self._description: Optional[str] = description

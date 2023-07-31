@@ -121,7 +121,7 @@ class DMStatComponent:
 ################################################################################
     def scale_up(self, value: float) -> None:
 
-        if not isinstance(value, float):
+        if not isinstance(value, (int, float)):
             raise TypeError("Invalid type passed to StatComponent.scaleup()")
 
         self._value *= value
@@ -132,13 +132,18 @@ class DMStatComponent:
 ################################################################################
     def scale_down(self, value: float) -> None:
 
-        if not isinstance(value, float):
+        if not isinstance(value, (int, float)):
             raise TypeError("Invalid type passed to StatComponent.scaledown()")
 
-        self._value /= value
+        self._value *= (1.0 - value)
 
         if self._value < 0:
             self._value = 0
+
+################################################################################
+    def copy(self) -> S:
+
+        return type(self)(self.__base, self._type)
 
 ################################################################################
     def reset(self) -> None:
