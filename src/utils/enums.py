@@ -4,7 +4,8 @@ from enum import Enum
 __all__ = (
     "DMObjectType",
     "SpawnType",
-    "LogLevel"
+    "LogLevel",
+    "StatComponentType",
 )
 
 ####################################################################################################
@@ -44,5 +45,16 @@ class LogLevel(Enum):
     Warning = 2
     Error = 3
     Critical = 4
+
+################################################################################
+class StatComponentType(Enum):
+
+    Life = 0
+    Attack = 1
+    Defense = 2
+    Dex = 3
+    Combat = 4
+    NumAttacks = 5
+    Speed = 6
 
 ################################################################################

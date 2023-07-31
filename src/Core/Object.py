@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from uuid import UUID, uuid4
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Type, TypeVar
 
+from Components import DMTransform
 from utils import *
 
 if TYPE_CHECKING:
@@ -10,6 +11,8 @@ if TYPE_CHECKING:
 ################################################################################
 
 __all__ = ("DMObject", )
+
+O = TypeVar("O", bound="DMObject")
 
 ################################################################################
 class DMObject:
@@ -20,15 +23,18 @@ class DMObject:
         "_name",
         "_description",
         "_rank",
+        "_transform",
     )
 
 ################################################################################
 ##### INITIALIZATION ###########################################################
 ################################################################################
-    def __init__(self, state: DMGame, name: str, description: Optional[str] = None, rank: int = 0):
+    def __init__(self, state: DMGame, name: str, description: Optional[str], rank: int):
 
         self._uuid: UUID = uuid4()
         self._state: DMGame = state
+
+        self._transform: DMTransform = DMTransform()
 
         self._name: str = name
         self._description: Optional[str] = description
@@ -75,6 +81,12 @@ class DMObject:
     def rank(self) -> int:
 
         return self._rank
+
+################################################################################
+    @property
+    def transform(self) -> DMTransform:
+
+        return self._transform
 
 ################################################################################
     @property
@@ -125,6 +137,18 @@ class DMObject:
 ################################################################################
     def copy(self, **kwargs) -> DMObject:
 
-        return DMObject(self._state, self._name, self._description, self._rank)
+        cls: Type[O] = type(self)
+        new_obj = cls.__new__(cls)
+
+        new_obj._uuid = uuid4()
+        new_obj._state = self._state
+
+        new_obj._transform = DMTransform()
+
+        new_obj._name = self._name
+        new_obj._description = self._description
+        new_obj._rank = self._rank
+
+        return new_obj
 
 ################################################################################

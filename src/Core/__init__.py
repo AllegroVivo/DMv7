@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from .Object import DMObject
     from .ObjPool import DMObjectPool
     from .Random import DMGenerator
+    from .Room import DMRoom
     from .State import DMState
     from .StateMachine import DMStateMachine
 ################################################################################
