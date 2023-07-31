@@ -59,6 +59,7 @@ LOG_HERO        = CYAN
 LOG_RELIC       = PURPLE
 LOG_SKILL       = ORANGE
 LOG_STATUS      = LIME
+LOG_ROOM        = LAVENDER
 # etc...
 
 ################################################################################

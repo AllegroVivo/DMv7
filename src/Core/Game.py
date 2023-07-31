@@ -4,7 +4,7 @@ import pygame
 
 from pygame import Surface, Vector2
 from pygame.time import Clock
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from Core.Events import DMEventManager
 from Core.Logger import DMLogManager
@@ -161,8 +161,28 @@ class DMGame:
 ################################################################################
 ##### LOGGING ##################################################################
 ################################################################################
-    def log(self, _obj: DMObject, msg: str) -> None:
+    def log_debug(self , msg: str, _obj: Optional[DMObject] = None) -> None:
 
-        self._logger.game(_obj, msg)
+        self._logger.log(msg, _obj, level=LogLevel.Debug)
+
+################################################################################
+    def log_info(self, msg: str, _obj: Optional[DMObject] = None) -> None:
+
+        self._logger.log(msg, _obj, level=LogLevel.Info)
+
+################################################################################
+    def log_warning(self, msg: str, _obj: Optional[DMObject] = None) -> None:
+
+        self._logger.log(msg, _obj, level=LogLevel.Warning)
+
+################################################################################
+    def log_error(self, msg: str, _obj: Optional[DMObject] = None) -> None:
+
+        self._logger.log(msg, _obj, level=LogLevel.Error)
+
+################################################################################
+    def log_critical(self, msg: str, _obj: Optional[DMObject] = None) -> None:
+
+        self._logger.log(msg, _obj, level=LogLevel.Critical)
 
 ################################################################################

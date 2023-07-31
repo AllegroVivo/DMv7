@@ -3,6 +3,8 @@ from __future__ import annotations
 from uuid import UUID, uuid4
 from typing import TYPE_CHECKING, Optional
 
+from utils import *
+
 if TYPE_CHECKING:
     from Core import DMGame
 ################################################################################
@@ -43,6 +45,14 @@ class DMObject:
         return self._uuid == other._uuid
 
 ################################################################################
+##### PROPERTIES ###############################################################
+################################################################################
+    @property
+    def game(self) -> DMGame:
+
+        return self._state
+
+################################################################################
     @property
     def id(self) -> str:
 
@@ -68,10 +78,12 @@ class DMObject:
 
 ################################################################################
     @property
-    def game(self) -> DMGame:
+    def obj_type(self) -> DMObjectType:
 
-        return self._state
+        return DMObjectType.Object
 
+################################################################################
+##### IDENTIFICATION ###########################################################
 ################################################################################
     @staticmethod
     def is_monster() -> bool:
@@ -81,6 +93,30 @@ class DMObject:
 ################################################################################
     @staticmethod
     def is_hero() -> bool:
+
+        return False
+
+################################################################################
+    @staticmethod
+    def is_room() -> bool:
+
+        return False
+
+################################################################################
+    @staticmethod
+    def is_skill() -> bool:
+
+        return False
+
+################################################################################
+    @staticmethod
+    def is_status() -> bool:
+
+        return False
+
+################################################################################
+    @staticmethod
+    def is_relic() -> bool:
 
         return False
 
