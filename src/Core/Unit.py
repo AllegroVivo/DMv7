@@ -2,10 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List, Optional, Type, TypeVar
 
-from Components import DMTransform, DMUnitStats
+from Components import DMUnitStats, DMAnimator
 from Core.Object import DMObject
 
 if TYPE_CHECKING:
+    from Components import DMUnitGraphics
     from Core import DMGame
 ################################################################################
 
@@ -18,6 +19,7 @@ class DMUnit(DMObject):
 
     __slots__ = (
         "_stats",
+        "_animator",
     )
 
 ################################################################################
@@ -37,7 +39,18 @@ class DMUnit(DMObject):
         super().__init__(state, name, description, rank)
 
         self._stats: DMUnitStats = DMUnitStats(life, atk, defense)
+        self._animator: DMAnimator = DMAnimator(self)
 
 ################################################################################
 ##### INTERNAL METHODS #########################################################
+################################################################################
+
+################################################################################
+##### PROPERTIES ###############################################################
+################################################################################
+    @property
+    def graphics(self) -> DMUnitGraphics:
+
+        return self._graphical
+
 ################################################################################

@@ -7,7 +7,8 @@ from Components import DMTransform
 from utils import *
 
 if TYPE_CHECKING:
-    from Core import DMGame, DMGraphical
+    from Core import DMGame
+    from Components import DMGraphical
 ################################################################################
 
 __all__ = ("DMObject", )
@@ -95,6 +96,12 @@ class DMObject:
     def obj_type(self) -> DMObjectType:
 
         return DMObjectType.Object
+
+################################################################################
+    @property
+    def graphics(self) -> DMGraphical:
+
+        return self._graphical
 
 ################################################################################
 ##### IDENTIFICATION ###########################################################

@@ -4,12 +4,12 @@ import pygame
 
 from abc import ABC, abstractmethod
 from pygame     import Surface, Vector2
-from typing     import TYPE_CHECKING, Optional, Type, TypeVar
+from typing     import TYPE_CHECKING, Optional, Type, TypeVar, Union
 
 from utils import *
 
 if TYPE_CHECKING:
-    from Core import DMObject, DMGame
+    from Core import DMObject, DMGame, DMHero, DMMonster, DMRoom, DMUnit
 ################################################################################
 
 __all__ = ("DMGraphicalComponent",)
@@ -23,6 +23,7 @@ class DMGraphicalComponent:
         "_parent",
         "_static",
         "_zoom",
+        "_state",
     )
 
 ################################################################################
@@ -34,6 +35,8 @@ class DMGraphicalComponent:
 
         self._static: Surface = None  # type: ignore
         self._zoom: Surface = None  # type: ignore
+
+        self._state: GraphicsState = GraphicsState.Idle
 
         self._load_sprites()
 
@@ -54,7 +57,7 @@ class DMGraphicalComponent:
 
 ################################################################################
     @property
-    def parent(self) -> DMObject:
+    def parent(self) -> Union[DMObject, DMHero, DMMonster, DMRoom, DMUnit]:
 
         return self._parent
 
@@ -85,9 +88,27 @@ class DMGraphicalComponent:
 
 ################################################################################
     @property
+    def state(self) -> GraphicsState:
+
+        return self._state
+
+################################################################################
+    @property
     def screen_pos(self) -> Vector2:
 
         return self._parent.transform.position
+
+################################################################################
+    @property
+    def current_sprite(self) -> Optional[Surface]:
+
+        match self._state:
+            case GraphicsState.Static:
+                return self.static_sprite
+            case GraphicsState.Zoom:
+                return self.zoom_sprite
+            case _:
+                raise TypeError("Invalid enum value passed to Graphical.current_sprite")
 
 ################################################################################
 ##### GENERAL METHODS ##########################################################
@@ -98,6 +119,7 @@ class DMGraphicalComponent:
         raise NotImplementedError
 
 ################################################################################
+    @abstractmethod
     def copy(self, parent: DMObject) -> DMGraphicalComponent:
 
         cls: Type[GC] = type(self)
@@ -109,5 +131,15 @@ class DMGraphicalComponent:
         new_obj._zoom = self._zoom.copy() if self._zoom is not None else None
 
         return new_obj
+
+################################################################################
+    def display_static(self) -> None:
+
+        self._state = GraphicsState.Static
+
+################################################################################
+    def display_zoom(self) -> None:
+
+        self._state = GraphicsState.Zoom
 
 ################################################################################

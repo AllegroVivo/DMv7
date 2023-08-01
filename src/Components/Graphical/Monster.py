@@ -43,3 +43,9 @@ class DMMonsterGraphics(DMGraphicalComponent):
         super().draw(surface)
 
 ################################################################################
+    def copy(self, parent: DMMonster) -> DMMonsterGraphics:
+
+        # Abstract method - so it requires a basic implementation.
+        return super().copy(parent)  # type: ignore
+
+################################################################################
